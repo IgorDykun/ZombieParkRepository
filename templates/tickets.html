@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Замовити квитки</h2>
+<form method="post">
+  <label>Дата відвідування: <input type="date" name="visit_date" required></label><br>
+  <label>Тип квитка:
+    <select name="ticket_type">
+      <option value="standard">Стандартний</option>
+      <option value="vip">VIP</option>
+    </select>
+  </label><br>
+  <label>Кількість: <input type="number" name="quantity" min="1" value="1"></label><br>
+  <button type="submit">Забронювати</button>
+</form>
+{% endblock %}

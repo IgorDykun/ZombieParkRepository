@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Мої бронювання</h2>
+{% if tickets %}
+<ul>
+  {% for t in tickets %}
+    <li>{{ t.event_date }} — {{ t.ticket_type }} — {{ t.quantity }} квитків — {{ t.price }} грн</li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>Ще немає бронювань.</p>
+{% endif %}
+<a href="{{ url_for('home') }}"><button>Повернутися на головну</button></a>
+{% endblock %}

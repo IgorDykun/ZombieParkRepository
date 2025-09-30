@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Всі квитки - Адмін{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Всі бронювання квитків</h1>
+</header>
+
+<main>
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>ID</th>
+            <th>Користувач</th>
+            <th>Дата події</th>
+            <th>Тип квитка</th>
+            <th>Ціна</th>
+            <th>Створено</th>
+        </tr>
+        {% for ticket in tickets %}
+        <tr>
+            <td>{{ ticket.id }}</td>
+            <td>{{ ticket.user_id }}</td>
+            <td>{{ ticket.event_date }}</td>
+            <td>{{ ticket.ticket_type }}</td>
+            <td>{{ ticket.price }}</td>
+            <td>{{ ticket.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{{ url_for('admin_home') }}"><button>Назад</button></a>
+</main>
+{% endblock %}
