@@ -3,22 +3,41 @@
 {% block title %}Головна - Zombie Park{% endblock %}
 
 {% block content %}
-<section id="about">
-    <h2>Про парк</h2>
-    <p>У далекому майбутньому тут можна побачити справжніх зомбі!</p>
-</section>
+<header>
+    <h1>Ласкаво просимо в Zombie Park!</h1>
+    <p>Спробуй наші дивовижні напої… якщо насмілишся!</p>
+</header>
 
-<section id="drinks">
-    <h2>Меню напоїв</h2>
-    <ul>
-        <li>Brain Smoothie – смачний та загадковий</li>
-        <li>Zombie Juice – тільки для сміливих</li>
-        <li>Undead Elixir – хто знає, що всередині?</li>
-    </ul>
-</section>
+<main>
+    <section id="about">
+        <h2>Про парк</h2>
+        <p>У далекому майбутньому тут можна побачити справжніх зомбі!</p>
+    </section>
 
-<section id="contact">
-    <h2>Контакти</h2>
-    <p>Email: zombiepark@example.com</p>
-</section>
+    <section id="drinks">
+        <h2>Меню напоїв</h2>
+        <ul>
+            <li>Brain Smoothie – смачний та загадковий</li>
+            <li>Zombie Juice – тільки для сміливих</li>
+            <li>Undead Elixir – хто знає, що всередині?</li>
+        </ul>
+    </section>
+
+    <section id="tickets">
+        {% if current_user.is_authenticated %}
+            {% if current_user.role != "admin" %}
+                <a href="{{ url_for('tickets') }}"><button>Замовити квитки</button></a>
+                <a href="{{ url_for('my_tickets') }}"><button>Мої квитки</button></a>
+            {% endif %}
+        {% else %}
+            <a href="{{ url_for('login') }}"><button>Увійти</button></a>
+            <a href="{{ url_for('register') }}"><button>Зареєструватися</button></a>
+        {% endif %}
+    </section>
+
+    <section id="contact">
+        <h2>Контакти</h2>
+        <p>Email: zombiepark@example.com</p>
+    </section>
+</main>
 {% endblock %}

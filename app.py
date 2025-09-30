@@ -23,7 +23,13 @@ def load_user(user_id):
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    # Якщо користувач уже увійшов, перенаправляємо за роллю
+    if current_user.is_authenticated:
+        if current_user.role == "admin":
+            return redirect(url_for("admin_home"))
+        else:
+            return redirect(url_for("home"))  # Можна змінити на сторінку замовлення квитків
+    return render_template("index.html")  # Лендінг з кнопками
 
 # --- Реєстрація ---
 @app.route("/register", methods=["GET", "POST"])
@@ -34,6 +40,7 @@ def register():
 
         hashed_pw = generate_password_hash(password, method="pbkdf2:sha256")
         new_user = User(username=username, password_hash=hashed_pw)
+
         db.session.add(new_user)
         db.session.commit()
 
@@ -53,9 +60,9 @@ def login():
         if user and check_password_hash(user.password_hash, password):
             login_user(user)
             if user.role == "admin":
-                return redirect(url_for("admin_tickets"))
+                return redirect(url_for("admin_home"))
             else:
-                return redirect(url_for("home"))
+                return redirect(url_for("home"))  # Можна змінити на сторінку замовлення квитків
         else:
             flash("Невірний логін або пароль.")
     return render_template("login.html")
@@ -67,6 +74,14 @@ def logout():
     logout_user()
     return redirect(url_for("home"))
 
+# --- Адмін: головна ---
+@app.route("/admin_home")
+@login_required
+def admin_home():
+    if current_user.role != "admin":
+        return "Доступ заборонено!", 403
+    return render_template("admin_home.html")
+
 # --- Замовлення квитків ---
 @app.route("/tickets", methods=["GET", "POST"])
 @login_required
@@ -76,10 +91,9 @@ def tickets():
         ticket_type = request.form.get("ticket_type", "standard")
         quantity = int(request.form.get("quantity", 1))  # кількість з форми
 
-        # Перевірка дати
         try:
             visit_date = datetime.strptime(visit_date_str, "%Y-%m-%d").date()
-        except ValueError:
+        except Exception:
             flash("Невірний формат дати.", "danger")
             return redirect(url_for("tickets"))
 
@@ -87,12 +101,9 @@ def tickets():
             flash("Дата не може бути в минулому.", "warning")
             return redirect(url_for("tickets"))
 
-        if ticket_type == "vip":
-            price_per_ticket = 200
-        else:
-            price_per_ticket = 100
-
-        total_price = price_per_ticket * quantity
+        # Встановлення ціни залежно від типу квитка
+        ticket_prices = {"standard": 100, "vip": 200}
+        total_price = ticket_prices.get(ticket_type, 100) * quantity
 
         ticket = Ticket(
             user_id=current_user.id,
@@ -100,14 +111,12 @@ def tickets():
             ticket_type=ticket_type,
             price=total_price
         )
-
         db.session.add(ticket)
         db.session.commit()
         flash(f"Квитки успішно заброньовано! Сума: {total_price} грн", "success")
         return redirect(url_for("my_tickets"))
 
     return render_template("tickets.html")
-
 
 # --- Мої квитки ---
 @app.route("/my_tickets")

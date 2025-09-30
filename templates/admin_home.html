@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Адмін - Zombie Park{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Панель адміністратора</h1>
+</header>
+
+<main>
+    <section>
+        <a href="{{ url_for('admin_tickets') }}"><button>Переглянути всі квитки</button></a>
+        <a href="{{ url_for('home') }}"><button>Головна сторінка</button></a>
+        <a href="{{ url_for('logout') }}"><button>Вийти</button></a>
+    </section>
+</main>
+{% endblock %}
