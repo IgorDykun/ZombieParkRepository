@@ -1,39 +1,24 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <title>Zombie Park</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <header>
-        <h1>Ласкаво просимо в Zombie Park!</h1>
-        <p>Спробуй наші дивовижні напої… якщо насмілишся!</p>
-    </header>
+{% extends "base.html" %}
 
-    <main>
-        <section id="about">
-            <h2>Про парк</h2>
-            <p>У далекому майбутньому тут можна побачити справжніх зомбі!</p>
-        </section>
+{% block title %}Головна - Zombie Park{% endblock %}
 
-        <section id="drinks">
-            <h2>Меню напоїв</h2>
-            <ul>
-                <li>Brain Smoothie – смачний та загадковий</li>
-                <li>Zombie Juice – тільки для сміливих</li>
-                <li>Undead Elixir – хто знає, що всередині?</li>
-            </ul>
-        </section>
+{% block content %}
+<section id="about">
+    <h2>Про парк</h2>
+    <p>У далекому майбутньому тут можна побачити справжніх зомбі!</p>
+</section>
 
-        <section id="contact">
-            <h2>Контакти</h2>
-            <p>Email: zombiepark@example.com</p>
-        </section>
-    </main>
+<section id="drinks">
+    <h2>Меню напоїв</h2>
+    <ul>
+        <li>Brain Smoothie – смачний та загадковий</li>
+        <li>Zombie Juice – тільки для сміливих</li>
+        <li>Undead Elixir – хто знає, що всередині?</li>
+    </ul>
+</section>
 
-    <footer>
-        <p>© 2025 Zombie Park</p>
-    </footer>
-</body>
-</html>
+<section id="contact">
+    <h2>Контакти</h2>
+    <p>Email: zombiepark@example.com</p>
+</section>
+{% endblock %}

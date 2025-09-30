@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Адмін - Квитки{% endblock %}
+
+{% block content %}
+<h2>Всі замовлені квитки</h2>
+{% if tickets %}
+    <ul>
+        {% for ticket in tickets %}
+            <li>{{ ticket.owner.username }} | {{ ticket.event_date }} | {{ ticket.ticket_type }} | Кількість: {{ ticket.quantity }} | Ціна: {{ ticket.price }} грн</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Немає замовлених квитків.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Замовлення квитків - Zombie Park{% endblock %}
+
+{% block content %}
+<h2>Замовлення квитків</h2>
+<form method="POST">
+    <label>Дата відвідування:</label>
+    <input type="date" name="visit_date" required>
+
+    <label>Тип квитка:</label>
+    <select name="ticket_type">
+        <option value="standard">Звичайний</option>
+        <option value="vip">VIP</option>
+    </select>
+
+    <label>Кількість:</label>
+    <input type="number" name="quantity" value="1" min="1" required>
+
+    <button type="submit">Забронювати</button>
+</form>
+
+
+<a href="{{ url_for('home') }}"><button>На головну</button></a>
+{% endblock %}
