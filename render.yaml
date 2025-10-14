@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: zombie-park-sandbox
+    env: python
+    plan: free
+    branch: develop
+    buildCommand: ""
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: SECRET_KEY
+        value: "secretkey"
+      - key: PYTHON_VERSION
+        value: "3.10"
