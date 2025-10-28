@@ -23,15 +23,13 @@ def load_user(user_id):
 
 @app.route("/")
 def home():
-    # Якщо користувач уже увійшов, перенаправляємо за роллю
     if current_user.is_authenticated:
         if current_user.role == "admin":
             return redirect(url_for("admin_home"))
         else:
-            return redirect(url_for("home"))  # Можна змінити на сторінку замовлення квитків
-    return render_template("index.html")  # Лендінг з кнопками
+            return render_template("index.html")
+    return render_template("index.html")
 
-# --- Реєстрація ---
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -49,7 +47,6 @@ def register():
 
     return render_template("register.html")
 
-# --- Вхід ---
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -67,14 +64,12 @@ def login():
             flash("Невірний логін або пароль.")
     return render_template("login.html")
 
-# --- Вихід ---
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("home"))
 
-# --- Адмін: головна ---
 @app.route("/admin_home")
 @login_required
 def admin_home():
@@ -82,7 +77,6 @@ def admin_home():
         return "Доступ заборонено!", 403
     return render_template("admin_home.html")
 
-# --- Замовлення квитків ---
 @app.route("/tickets", methods=["GET", "POST"])
 @login_required
 def tickets():
@@ -101,7 +95,6 @@ def tickets():
             flash("Дата не може бути в минулому.", "warning")
             return redirect(url_for("tickets"))
 
-        # Встановлення ціни залежно від типу квитка
         ticket_prices = {"standard": 100, "vip": 200}
         total_price = ticket_prices.get(ticket_type, 100) * quantity
 
@@ -118,14 +111,12 @@ def tickets():
 
     return render_template("tickets.html")
 
-# --- Мої квитки ---
 @app.route("/my_tickets")
 @login_required
 def my_tickets():
     tickets = Ticket.query.filter_by(user_id=current_user.id).order_by(Ticket.event_date.desc()).all()
     return render_template("my_tickets.html", tickets=tickets)
 
-# --- Адмін: усі квитки ---
 @app.route("/admin/tickets")
 @login_required
 def admin_tickets():
