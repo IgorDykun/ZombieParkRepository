@@ -3,10 +3,13 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
 from datetime import datetime, date
+from sqlalchemy.orm import joinedload
+from flask_compress import Compress
 
 from models import db, User, Ticket
 
 app = Flask(__name__)
+Compress(app)
 app.config['SECRET_KEY'] = 'secretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///zombiepark.db'
 
@@ -23,12 +26,8 @@ def load_user(user_id):
 
 @app.route("/")
 def home():
-    if current_user.is_authenticated:
-        if current_user.role == "admin":
-            return redirect(url_for("admin_home"))
-        else:
-            return render_template("index.html")
-    return render_template("index.html")
+    template = "admin_home.html" if (current_user.is_authenticated and current_user.role == "admin") else "index.html"
+    return render_template(template)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -114,7 +113,7 @@ def tickets():
 @app.route("/my_tickets")
 @login_required
 def my_tickets():
-    tickets = Ticket.query.filter_by(user_id=current_user.id).order_by(Ticket.event_date.desc()).all()
+    tickets = Ticket.query.options(joinedload(Ticket.owner)).order_by(Ticket.created_at.desc()).all()
     return render_template("my_tickets.html", tickets=tickets)
 
 @app.route("/admin/tickets")
