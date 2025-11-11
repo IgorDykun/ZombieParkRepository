@@ -27,7 +27,6 @@ msgpack==1.1.2
 packaging==25.0
 psutil==7.1.2
 pycparser==2.23
-pywin32==311
 pyzmq==27.1.0
 requests==2.32.5
 SQLAlchemy==2.0.43
