@@ -4,12 +4,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
 from datetime import datetime, date
 from sqlalchemy.orm import joinedload
-from flask_compress import Compress
+#from flask_compress import Compress
 
 from models import db, User, Ticket
 
 app = Flask(__name__)
-Compress(app)
+#Compress(app)
 app.config['SECRET_KEY'] = 'secretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///zombiepark.db'
 

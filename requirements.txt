@@ -43,4 +43,4 @@ Flask-Migrate
 Flask-SQLAlchemy
 Werkzeug
 gunicorn
-Flask-Compress==1.15
+#Flask-Compress==1.15
